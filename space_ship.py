@@ -24,7 +24,7 @@ class SpaceShip:
         self.turn_right = False
         self.turn_left = False
         self.speed = float(0)
-        self.max_speed = 1
+        self.max_speed = 5
 
     def draw_space_ship(self):
         """отрисовка корабля"""
@@ -33,10 +33,10 @@ class SpaceShip:
     def update_ship(self):
         """обновление позиции корабля"""
         if self.move_up and self.InScreen():
-            self.speed = min(self.speed + 0.0005, self.max_speed)
+            self.speed = min(self.speed + 0.05, self.max_speed)
             self.position += self.direction * self.speed
         elif not self.move_up and self.InScreen():
-            self.speed = max(self.speed - 0.0005, 0)
+            self.speed = max(self.speed - 0.05, 0)
             self.position += self.direction * self.speed
 
         if self.turn_right:

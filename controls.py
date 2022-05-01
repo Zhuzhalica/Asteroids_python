@@ -39,13 +39,20 @@ def events(screen, space_ship, bullets):
                 space_ship.turn_left = False
 
 
-def screen_update(bg_color, screen, space_ship, bullets):
+def screen_update(bg_color, screen, space_ship, asteroid,  bullets):
     """обновление экрана"""
-    screen.fill(bg_color)
+    #screen.fill(bg_color)
+    image = pygame.image.load("image/cosmos.jpg")
+    rect = screen.get_rect()
+    redact_image = pygame.transform.scale(image, (rect.right - rect.left,rect.bottom - rect.top))
+    screen.blit(redact_image, (0,0))
+    
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     # space_ship.draw_space_ship()
+    asteroid.draw_asteroid()
     pygame.display.flip()
+    
 
 
 def update_bullets(bullets, space_ship):
