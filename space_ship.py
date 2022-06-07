@@ -1,12 +1,13 @@
 import pygame
 
 
-class SpaceShip:
+class SpaceShip(pygame.sprite.Sprite):
     def __init__(self, screen):
         """создаем корабль"""
-
+        pygame.sprite.Sprite.__init__(self)
+        self.health = 50
         self.screen = screen
-        self.image = pygame.image.load("image/pixil-frame-0.png")
+        self.image = pygame.transform.scale(pygame.image.load("image/pixil-frame-0.png"),(50,50))
 
         # стартовая позиция
         self.screen_rect = screen.get_rect()
@@ -40,6 +41,9 @@ class SpaceShip:
             self.speed = max(self.speed - self.deceleration, 0)
             self.position += self.direction * self.speed
 
+        if self.health <= 0:
+            self.kill()
+
         self.StayInScreen()
 
         if self.turn_right:
@@ -62,3 +66,6 @@ class SpaceShip:
 
         if self.position.x < self.screen_rect.left:
             self.position.x -= self.screen_rect.left - self.screen_rect.right
+
+    def TakeDamage(self, damage):
+        self.health -= damage
