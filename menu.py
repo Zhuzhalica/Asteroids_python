@@ -21,18 +21,19 @@ class Menu:
         
     
     def update(self):
-        while True:
-            self.screen.blit(self.image, (0,0))
-            events = pygame.event.get()
-            for event in events:
-              if event.type == pygame.QUIT:
-                 exit()
+        
+        self.screen.blit(self.image, (0,0))
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                exit()
 
-            if self.menu.is_enabled():
-                self.menu.update(events)
-                self.menu.draw(self.screen)
+        if self.menu.is_enabled():
+            self.menu.update(events)
+            self.menu.draw(self.screen)
+        pygame.display.update()
+            
 
-            pygame.display.update()
 
     def start_the_game(self):
         self.IsActive = False
