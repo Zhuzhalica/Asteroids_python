@@ -1,3 +1,4 @@
+import math
 import pygame
 
 
@@ -6,25 +7,24 @@ class Bullet(pygame.sprite.Sprite):
         """иницилизация пули"""
         super(Bullet, self).__init__()
         self.screen = screen
-        self.rect = pygame.Rect(0, 0, 2, 12)
-        self.color = (255, 255, 255)
-        self.speed = 1
-        self.position = space_ship.position
-        self.direction = space_ship.direction
-        self.rect.center = space_ship.position
-        self.rect.center = self.position + space_ship.direction * 10
-        self.y = float(self.rect.y)
-        self.direction_shoot = pygame.math.Vector2(0, 0)
+        self.image = pygame.transform.rotate(pygame.image.load("image/bullet.png"), space_ship.angle)
+        self.rect = self.image.get_rect()
+        self.speed = 5
+        self.direction = space_ship.direction.copy()
+        position = space_ship.position.copy()
+        position.y -= space_ship.image.get_size()[1] * math.cos(math.radians(space_ship.angle)) / 2
+        position.x -= space_ship.image.get_size()[0] * math.sin(math.radians(space_ship.angle)) / 2
 
-    def shoot(self):
-        self.position += self.direction * self.speed
-        self.direction_shoot = self.direction
+        self.position = position
+
+
 
     def update(self, space_ship):
         """Обновляем позицию пули"""
-        self.rect.center = self.position + self.direction * 50
-        self.position = space_ship.position
+        self.position += self.direction * self.speed
+        self.rect.center = self.positio
+
 
     def draw_bullet(self):
         """Отрисовываем пулю на экране"""
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        self.screen.blit(self.image, self.position)

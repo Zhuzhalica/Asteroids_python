@@ -15,5 +15,6 @@ class Button(pygame.sprite.Sprite):
 
     def update(self, screen):
         if not self.isPressed:
-            pygame.draw.rect(screen, (255, 255, 255), (200, self.text_rect.y - 25, 400, 76))
+            pygame.draw.rect(screen, (255, 255, 255),
+                             (200, self.text_rect.y - 25, 400, 76))
             screen.blit(self.text, self.text_rect)

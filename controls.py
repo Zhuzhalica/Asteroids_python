@@ -27,7 +27,6 @@ def events(screen, space_ship, bullets):
             # стрельба
             if event.key == pygame.K_SPACE:
                 new_bullet = Bullet(screen, space_ship)
-                new_bullet.shoot()
                 bullets.add(new_bullet)
 
         elif event.type == pygame.KEYUP:
@@ -44,12 +43,12 @@ def screen_update(bg_color, screen, space_ship, asteroid,  bullets):
     #screen.fill(bg_color)
     image = pygame.image.load("image/cosmos.jpg")
     rect = screen.get_rect()
-    redact_image = pygame.transform.scale(image, (rect.right - rect.left,rect.bottom - rect.top))
-    screen.blit(redact_image, (0,0))
+    redact_image = pygame.transform.scale(image, (rect.right - rect.left, rect.bottom - rect.top))
+    screen.blit(redact_image, (0, 0))
     
     for bullet in bullets.sprites():
         bullet.draw_bullet()
-    # space_ship.draw_space_ship()
+    space_ship.draw_space_ship()
     asteroid.draw_asteroid()
     pygame.display.flip()
     
