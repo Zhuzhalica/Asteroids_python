@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 
@@ -5,18 +7,20 @@ class SpaceShip(pygame.sprite.Sprite):
     def __init__(self, screen):
         """создаем корабль"""
         pygame.sprite.Sprite.__init__(self)
-        self.health = 50
+        self.health = 3
         self.screen = screen
-        self.image = pygame.transform.scale(pygame.image.load("image/pixil-frame-0.png"),(50,50))
+        self.image = pygame.transform.scale(pygame.image.load("assets/image/space-ship.png"), (50, 50))
 
         # стартовая позиция
         self.screen_rect = screen.get_rect()
         self.position = pygame.math.Vector2(self.screen_rect.center)
         self.direction = pygame.math.Vector2(-1, 0)
         self.rect = self.image.get_rect()
+        self.rect.width = int(self.rect.width * 0.75)
+        self.rect.height = int(self.rect.height * 0.75)
         self.rect.center = self.position
 
-        # переменные движения
+        # переменные движения корабля
         self.move_up = False
         self.turn_right = False
         self.turn_left = False
@@ -41,20 +45,19 @@ class SpaceShip(pygame.sprite.Sprite):
             self.speed = max(self.speed - self.deceleration, 0)
             self.position += self.direction * self.speed
 
-        if self.health <= 0:
-            self.kill()
-
-        self.StayInScreen()
-
-        if self.turn_right:
-            self.direction.rotate_ip(1)
-        if self.turn_left:
-            self.direction.rotate_ip(-1)
-
-        self.angle = (self.direction.angle_to((1, 0)) - 90) % 360
         self.rect.center = self.position
 
-    def StayInScreen(self):
+        self.stay_in_screen()
+
+        if self.turn_right:
+            self.direction.rotate_ip(2)
+        if self.turn_left:
+            self.direction.rotate_ip(-2)
+
+        self.angle = (self.direction.angle_to((1, 0)) - 90) % 360
+
+    def stay_in_screen(self):
+        """Если игрок выходит за границы экарана, то оказывается с другой его стороны"""
         if self.position.y < self.screen_rect.top:
             self.position.y += self.screen_rect.bottom - self.screen_rect.top
 
@@ -67,5 +70,18 @@ class SpaceShip(pygame.sprite.Sprite):
         if self.position.x < self.screen_rect.left:
             self.position.x -= self.screen_rect.left - self.screen_rect.right
 
-    def TakeDamage(self, damage):
-        self.health -= damage
+    def take_damage(self):
+        """Получение урона"""
+        self.health -= 1
+        pygame.time.delay(500)
+
+        if self.health < 0:
+            self.death()
+
+        self.speed = 0
+        self.position = pygame.math.Vector2(self.screen_rect.center)
+        self.direction = pygame.math.Vector2(-1, 0)
+        self.rect.center = self.position
+
+    def death(self):
+        """Конец игры"""
