@@ -3,7 +3,7 @@ import pygame_menu
 from button import Button
 
 
-class Menu:
+class Game_Over_Menu:
     def __init__(self, screen):
         my_theme = pygame_menu.Theme(background_color=(0, 0, 0, 0),  # transparent background
                                      title_background_color=(0, 0, 0, 0),
@@ -22,6 +22,7 @@ class Menu:
         self.menu.add.button('Quit', pygame_menu.events.EXIT)
 
     def update(self):
+
         self.screen.blit(self.image, (0, 0))
         events = pygame.event.get()
         for event in events:

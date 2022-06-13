@@ -13,7 +13,7 @@ class UFO(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, screen.get_rect().width - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speed = random.randrange(2, 8)
+        self.speed = random.randrange(1, 4)
 
     def update(self):
         self.rect.center += self.speed * self.direction
@@ -28,8 +28,11 @@ class UFO(pygame.sprite.Sprite):
         if self.health <= 0:
             self.kill()
 
-    def InScreen(self):
-        if self.rect.top > self.screen_rect.top or self.rect.bottom < self.screen_rect.bottom or self.rect.right > self.screen_rect.right or self.rect.left < self.screen_rect.left:
+    def in_screen(self):
+        if self.rect.top > self.screen_rect.top\
+                or self.rect.bottom < self.screen_rect.bottom\
+                or self.rect.right > self.screen_rect.right\
+                or self.rect.left < self.screen_rect.left:
             return False
         return True
 

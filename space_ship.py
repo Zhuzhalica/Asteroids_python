@@ -1,7 +1,7 @@
 import time
 
 import pygame
-
+from menu import Menu
 
 class SpaceShip(pygame.sprite.Sprite):
     def __init__(self, screen):

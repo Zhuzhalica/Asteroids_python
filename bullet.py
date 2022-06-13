@@ -20,7 +20,6 @@ class Bullet(pygame.sprite.Sprite):
         self.position = position
 
 
-
     def update(self):
         """Обновляем позицию пули"""
         self.position += self.direction * self.speed

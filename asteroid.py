@@ -17,8 +17,8 @@ class Asteroid(pygame.sprite.Sprite):
         image = pygame.image.load(filename)
         self.image = pygame.transform.scale(image, size)
         self.rect = self.image.get_rect(center=self.position)
-        self.rect.width = int(self.rect.width * 0.75)
-        self.rect.height = int(self.rect.height * 0.75)
+        self.rect.width = int(self.rect.width * 0.82)
+        self.rect.height = int(self.rect.height * 0.82)
         self.direction = direction
 
     def draw_asteroid(self):
