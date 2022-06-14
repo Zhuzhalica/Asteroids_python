@@ -7,6 +7,7 @@ from asteroid import Asteroid
 
 
 def events(screen, space_ship, bullets):
+    sound_shoot = pygame.mixer.Sound('sounds/shoot.mp3')
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -30,6 +31,7 @@ def events(screen, space_ship, bullets):
             # стрельба
             if event.key == pygame.K_SPACE:
                 new_bullet = Bullet(screen, space_ship)
+                sound_shoot.play(0)
                 bullets.add(new_bullet)
 
         elif event.type == pygame.KEYUP:

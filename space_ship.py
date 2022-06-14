@@ -5,6 +5,7 @@ from menu import Menu
 
 class SpaceShip(pygame.sprite.Sprite):
     def __init__(self, screen):
+        self.sound_boom = pygame.mixer.Sound('sounds/boom.mp3')
         """создаем корабль"""
         pygame.sprite.Sprite.__init__(self)
         self.health = 3
@@ -72,6 +73,7 @@ class SpaceShip(pygame.sprite.Sprite):
 
     def take_damage(self):
         """Получение урона"""
+        self.sound_boom.play(0)
         self.health -= 1
         pygame.time.delay(500)
 
