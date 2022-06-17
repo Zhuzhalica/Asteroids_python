@@ -83,10 +83,6 @@ def update_bullets(bullets):
             bullet.kill()
 
 
-def ufos_update(ufos):
-    ufos.update()
-
-
 def interactions_controller(asteroids, ufos, bullets, buffs, space_ship, stat):
     enemies = asteroids.copy()
     enemies.add(ufos.copy())

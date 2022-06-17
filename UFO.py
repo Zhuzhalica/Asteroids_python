@@ -4,7 +4,7 @@ from bullet import Bullet
 
 
 class UFO(pygame.sprite.Sprite):
-    def __init__(self, screen=pygame.display.set_mode((800, 450))):
+    def __init__(self, screen=pygame.display.set_mode((800, 450)), position=pygame.Vector2()):
         self.sound_shoot = pygame.mixer.Sound('sounds/shoot.mp3')
         """создаем астероид c стартовой позицией"""
         pygame.sprite.Sprite.__init__(self)
@@ -19,8 +19,7 @@ class UFO(pygame.sprite.Sprite):
 
         self.angle = self.direction.angle_to((1, 0)) + 40
         self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(0, screen.get_rect().width - self.rect.width)
-        self.rect.y = random.randrange(-100, -40)
+        self.rect.center = position
         self.max_size = 60
         self.speed = random.randrange(3, 4)
 
@@ -45,24 +44,14 @@ class UFO(pygame.sprite.Sprite):
         if self.rect.x <= self.screen_rect.left:
             self.rect.x -= self.screen_rect.left - self.screen_rect.right
 
-    def in_screen(self):
-        if self.rect.top > self.screen_rect.top \
-                or self.rect.bottom < self.screen_rect.bottom \
-                or self.rect.right > self.screen_rect.right \
-                or self.rect.left < self.screen_rect.left:
-            return False
-        return True
-
     def draw(self):
         """отрисовка астероида"""
         self.screen.blit(self.image, self.rect)
 
-    
     def shoot(self, bullets):
         self.sound_shoot.play(0)
         bullet = Bullet(self.screen, self)
         bullets.add(bullet)
-    
 
     def move_zigzag(self):
         if self.count_fr_move < self.count_frames:
@@ -71,5 +60,3 @@ class UFO(pygame.sprite.Sprite):
             self.direction = pygame.math.Vector2.rotate(self.direction, self.angle_turn)
             self.angle_turn *= - 1
             self.count_fr_move = 0
-
-
