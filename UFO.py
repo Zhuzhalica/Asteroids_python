@@ -21,7 +21,7 @@ class UFO(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, screen.get_rect().width - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speed = random.randrange(3, 4)
+        self.speed = random.randrange(3, 5)
 
     def update(self):
         self.rect.center += self.speed * self.direction
