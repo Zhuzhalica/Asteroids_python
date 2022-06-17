@@ -11,16 +11,21 @@ class UFO(pygame.sprite.Sprite):
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.health = 100
+        self.count_frames = random.randrange(20, 40)
+        self.count_fr_move = 0
         self.image = pygame.transform.scale(pygame.image.load("assets/image/ufo.png"), (60, 40))
         self.direction = pygame.math.Vector2(random.uniform(-0.7, 0.7), random.uniform(-0.7, 0.7))
-        self.angle = self.direction.angle_to((1, 0))+ 40
+        self.angle_turn = 80
+
+        self.angle = self.direction.angle_to((1, 0)) + 40
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(0, screen.get_rect().width - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speed = random.randrange(1, 4)
+        self.speed = random.randrange(3, 4)
 
     def update(self):
         self.rect.center += self.speed * self.direction
+        self.move_zigzag()
         self.stay_in_screen()
         if self.health <= 0:
             self.kill()
@@ -55,9 +60,20 @@ class UFO(pygame.sprite.Sprite):
         self.screen.blit(self.image, self.rect)
 
     
-    def shoot(self):
+    def shoot(self, bullets):
         self.sound_shoot.play(0)
         bullet = Bullet(self.screen, self)
-        self.bullets.add(bullet)
+        bullets.add(bullet)
+    
+
+    def move_zigzag(self):
+        if self.count_fr_move < self.count_frames:
+            self.count_fr_move += 1
+        if self.count_fr_move >= self.count_frames:
+            self.direction = pygame.math.Vector2.rotate(self.direction, self.angle_turn)
+            self.angle_turn *= - 1
+            self.count_fr_move = 0
+
+
 
 
