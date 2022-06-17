@@ -1,38 +1,53 @@
 import pygame
 import pygame_menu
-from button import Button
 
 
 class Game_Over_Menu:
-    def __init__(self, screen):
-        my_theme = pygame_menu.Theme(background_color=(0, 0, 0, 0),  # transparent background
+    def __init__(self, main_menu, screen, score, name, hight_name, hight_score):
+        self.main_menu = main_menu
+        my_theme = pygame_menu.Theme(background_color=(0, 0, 0, 255),  # transparent background
                                      title_background_color=(0, 0, 0, 0),
                                      title_font_shadow=True,
-                                     widget_padding=30)
-        self.image = pygame.transform.scale(pygame.image.load("assets/image/background.jpg"),
+                                     widget_padding=25)
+        self.image = pygame.transform.scale(pygame.image.load("assets/image/cosmos.jpg"),
                                             (screen.get_rect().width, screen.get_rect().height))
         self.screen = screen
         self.IsActive = True
-        self.menu = pygame_menu.Menu("", 300, 400,
+        self.menu = pygame_menu.Menu("", 700, 800,
                                      theme=my_theme)
 
-        # self.menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=self.set_difficulty)
-        self.menu.add.button('Play', self.start_the_game)
-        self.menu.add.text_input('Name:', default='Player')
-        self.menu.add.button('Quit', pygame_menu.events.EXIT)
+        text_color = (255, 255, 255)
+        font = "assets/ofont.ru_Fixedsys.ttf"
+
+        self.menu.add.label(f"{name}, your score {score}",
+                            font_color=text_color,
+                            font_name=font,
+                            font_size=44)
+        self.menu.add.label(f"Best score: {hight_name} - {hight_score}",
+                            font_color=text_color,
+                            font_name=font,
+                            font_size=36)
+        self.menu.add.button('Restart', self.start_the_game,
+                             font_color=text_color,
+                             font_name=font,
+                             font_size=36)
+        self.menu.add.button('Exit', self.in_main_menu,
+                             font_color=text_color,
+                             font_name=font,
+                             font_size=36)
 
     def update(self):
-
         self.screen.blit(self.image, (0, 0))
         events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                exit()
-
         if self.menu.is_enabled():
             self.menu.update(events)
             self.menu.draw(self.screen)
         pygame.display.update()
 
     def start_the_game(self):
+        self.main_menu.IsActive = False
+        self.IsActive = False
+
+    def in_main_menu(self):
+        self.main_menu.IsActive = True
         self.IsActive = False

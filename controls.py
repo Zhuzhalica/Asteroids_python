@@ -1,9 +1,11 @@
+import math
+
 import pygame
 import sys
-
 from UFO import UFO
 from bullet import Bullet
 from asteroid import Asteroid
+import time
 
 
 def events(screen, space_ship, bullets):
@@ -33,6 +35,11 @@ def events(screen, space_ship, bullets):
                 new_bullet = Bullet(screen, space_ship)
                 sound_shoot.play(0)
                 bullets.add(new_bullet)
+                if space_ship.triple_gun:
+                    bullet = Bullet(screen, space_ship, add_angle=15)
+                    bullets.add(bullet)
+                    bullet = Bullet(screen, space_ship, add_angle=-15)
+                    bullets.add(bullet)
 
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
@@ -43,7 +50,7 @@ def events(screen, space_ship, bullets):
                 space_ship.turn_left = False
 
 
-def screen_update(screen, space_ship, stat, asteroid, bullets, ufos):
+def screen_update(screen, space_ship, stat, asteroids, buffs, bullets, ufos):
     """обновление экрана"""
     image = pygame.image.load("assets/image/cosmos.jpg")
     rect = screen.get_rect()
@@ -53,11 +60,16 @@ def screen_update(screen, space_ship, stat, asteroid, bullets, ufos):
     for bullet in bullets.sprites():
         bullet.draw()
 
+    for buff in buffs.sprites():
+        buff.draw()
+
     for ufo in ufos:
         ufo.draw()
 
+    for asteroid in asteroids.sprites():
+        asteroid.draw()
+
     space_ship.draw_space_ship()
-    asteroid.draw_asteroid()
     stat.draw_stat()
     pygame.display.flip()
 
@@ -75,21 +87,26 @@ def ufos_update(ufos):
     ufos.update()
 
 
-def interactions_controller(enemies, bullets, space_ship, stat):
-    collisions_with_bullet = pygame.sprite.groupcollide(bullets, enemies, True, True)
-    collisions_with_player = pygame.sprite.spritecollideany(space_ship, enemies)
+def interactions_controller(asteroids, ufos, bullets, buffs, space_ship, stat):
+    enemies = asteroids.copy()
+    enemies.add(ufos.copy())
 
-    if collisions_with_player:
-        space_ship.take_damage()
-        if type(collisions_with_player) is Asteroid:
-            collisions_with_player.death()
-        collisions_with_player.kill()
+    pygame.sprite.groupcollide(asteroids, ufos, True, True)
+    collisions_BLE = pygame.sprite.groupcollide(bullets, enemies, True, True)
+    collisions_PE = pygame.sprite.spritecollideany(space_ship, enemies)
+    collisions_PBF = pygame.sprite.spritecollideany(space_ship, buffs)
 
-    for enemies_list in collisions_with_bullet.values():
+    if time.perf_counter() - space_ship.start_time > 4:
+        if collisions_PE:
+            space_ship.take_damage()
+            if type(collisions_PE) is Asteroid:
+                collisions_PE.death()
+            collisions_PE.kill()
+
+    if collisions_PBF:
+        space_ship.get_buff(collisions_PBF)
+        collisions_PBF.kill()
+
+    for enemies_list in collisions_BLE.values():
         for enemy in enemies_list:
-            if type(enemy) is Asteroid:
-                stat.score += int(100 * (enemy.image.get_size()[0] / 84))
-                enemy.death()
-            elif type(enemy) is UFO:
-                stat.score += int(200 * (enemy.image.get_size()[0] / 60))
-                enemy.kill()
+            stat.make_stat(enemy)

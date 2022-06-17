@@ -2,42 +2,38 @@ import pygame
 import random
 from pygame.sprite import Group
 
-from asteroid import Asteroid
+from Buffs import Buff_Item, Buffs
 
 
 class Generator_Buffs:
-    def __init__(self, screen, frequency):
+    def __init__(self, screen=pygame.display.set_mode((800, 450)),
+                 frequency_min=0, frequency_max=0):
         self.screen = screen
-        self.frequency = frequency
-        self.asteroids = Group()
-        self.images = ("assets/image/space-ship-protected.png")
+        self.frequency_min = frequency_min
+        self.frequency_max = frequency_max
+        self.frequency = random.randint(frequency_min, frequency_max)
+        self.enums = (Buffs.HP, Buffs.Shield, Buffs.Triple_Gun)
+        self.buffs = Group()
         self.count = 0
 
-    def draw_asteroid(self):
+    def draw_buffs(self):
         """Отрисовка всех астероидов"""
-        for asteroid in self.asteroids:
-            asteroid.draw_asteroid()
+        for buff in self.buffs:
+            buff.draw()
 
-    def make_random_buffs(self):
-        x = random.randint(0, self.screen.get_rect().width)
-        y = random.randint(0, self.screen.get_rect().height)
+    def make_buff(self):
+        x = random.randint(10, self.screen.get_rect().width - 10)
+        y = random.randint(10, self.screen.get_rect().height - 10)
         position = pygame.Vector2(x, y)
 
-        size = random.uniform(0.6, 1.4) * 60
-        image = "assets/image/image_asteroids/" + random.choice(self.images)
-        self.asteroids.add(Asteroid(self, self.screen, random.choice(start_position), size_v, direction, speed, image))
+        enum = random.choice(self.enums)
 
-    def make_asteroid_with_size(self, position, size, image):
-        start_position = position
-        direction = pygame.math.Vector2(random.uniform(-0.7, 0.7), random.uniform(-0.7, 0.7))
-        size_v = pygame.math.Vector2(size, size)
-        speed = random.uniform(3, 5)
-        self.asteroids.add(Asteroid(self, self.screen, start_position, size_v, direction, speed, image))
+        self.buffs.add(Buff_Item(enum, screen=self.screen, position=position))
 
     def update(self):
         if self.count > self.frequency:
-            self.make_random_asteroid()
+            self.make_buff()
+            self.frequency = random.randint(self.frequency_min,
+                                            self.frequency_max)
             self.count = 0
         self.count += 1
-        for asteroid in self.asteroids:
-            asteroid.update()

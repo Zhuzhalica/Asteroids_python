@@ -1,11 +1,12 @@
 from tracemalloc import start
 import pygame
-
 import game_manager
 
 
 class Asteroid(pygame.sprite.Sprite):
-    def __init__(self, generator, screen, start_position, size, direction, speed, filename):
+    def __init__(self, generator=None, screen=pygame.display.set_mode((800, 450)),
+                 start_position=pygame.Vector2(), size=pygame.Vector2(),
+                 direction=pygame.Vector2(), speed=0, filename="assets/image/image_asteroids/planet1.png"):
         """создаем астероид c стартовой позицией"""
         pygame.sprite.Sprite.__init__(self)
         self.generator = generator
@@ -17,27 +18,27 @@ class Asteroid(pygame.sprite.Sprite):
         image = pygame.image.load(filename)
         self.image = pygame.transform.scale(image, size)
         self.rect = self.image.get_rect(center=self.position)
-        self.rect.width = int(self.rect.width * 0.82)
-        self.rect.height = int(self.rect.height * 0.82)
+        self.rect.width = int(self.rect.width * 0.9)
+        self.rect.height = int(self.rect.height * 0.9)
         self.direction = direction
+        self.max_size = 84
 
-    def draw_asteroid(self):
+    def draw(self):
         """отрисовка астероида"""
         self.screen.blit(self.image, self.position)
 
     def update(self):
         """Обновляем позицию астероида"""
-        if self.in_screen:
-            self.position += self.direction * self.speed
-            self.rect.center = self.position
-            self.draw_asteroid()
-        else:
-            self.kill()
+        self.position += self.direction * self.speed
+        self.rect.center = self.position
 
     def in_screen(self):
         return game_manager.in_screen(self.screen, self.position)
 
     def death(self):
         if self.image.get_size()[0] > 55:
-            self.generator.make_asteroid_with_size(self.position.copy(), self.image.get_size()[0] - 20, self.image_file)
-            self.generator.make_asteroid_with_size(self.position.copy(), self.image.get_size()[0] - 20, self.image_file)
+            for i in range(2):
+                self.generator. \
+                    make_asteroid_with_size(self.position.copy(),
+                                            self.image.get_size()[0] - 20,
+                                            self.image_file)

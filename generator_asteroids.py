@@ -6,11 +6,13 @@ from asteroid import Asteroid
 
 
 class Generator:
-    def __init__(self, screen, frequency):
+    def __init__(self, screen=pygame.display.set_mode((800, 450)),
+                 frequency=0):
         self.screen = screen
         self.frequency = frequency
         self.asteroids = Group()
-        self.images = ("default_asteroid.png", "planet1.png", "planet2.png")
+        self.images = ("default_asteroid.png", "planet1.png",
+                       "planet2.png")
         self.count = 0
 
     def draw_asteroid(self):
@@ -19,28 +21,42 @@ class Generator:
             asteroid.draw_asteroid()
 
     def make_random_asteroid(self):
-        start_position = (pygame.math.Vector2(-10, random.randint(-10, self.screen.get_rect().bottom)),
-                          pygame.math.Vector2(self.screen.get_rect().right + 10,
-                                              random.randint(-10, self.screen.get_rect().bottom)))
+        start_position = (
+            pygame.math.Vector2(0,
+                                random.
+                                randint(0,
+                                        self.screen.get_rect().bottom)),
+            pygame.math.Vector2(self.screen.get_rect().right,
+                                random.
+                                randint(0,
+                                        self.screen.get_rect().bottom)))
 
-        direction = pygame.math.Vector2(random.uniform(-0.7, 0.7), random.uniform(-0.7, 0.7))
+        direction = pygame.math.Vector2(random.uniform(-0.7, 0.7),
+                                        random.uniform(-0.7, 0.7))
         size = random.uniform(0.6, 1.4) * 60
         size_v = pygame.math.Vector2(size, size)
-        speed = random.uniform(3, 5)
-        image = "assets/image/image_asteroids/" + random.choice(self.images)
-        self.asteroids.add(Asteroid(self, self.screen, random.choice(start_position), size_v, direction, speed, image))
+        speed = random.uniform(5, 8)
+        image = "assets/image/image_asteroids/" +\
+                random.choice(self.images)
+        self.asteroids.add(Asteroid(self, self.screen,
+                                    random.choice(start_position),
+                                    size_v, direction, speed, image))
 
     def make_asteroid_with_size(self, position, size, image):
-        start_position = position
-        direction = pygame.math.Vector2(random.uniform(-0.7, 0.7), random.uniform(-0.7, 0.7))
+        direction = pygame.math.Vector2(random.uniform(-0.7, 0.7),
+                                        random.uniform(-0.7, 0.7))
         size_v = pygame.math.Vector2(size, size)
-        speed = random.uniform(3, 5)
-        self.asteroids.add(Asteroid(self, self.screen, start_position, size_v, direction, speed, image))
+        speed = random.uniform(5, 8)
+        self.asteroids.add(Asteroid(self, self.screen, position,
+                                    size_v, direction, speed, image))
 
     def update(self):
         if self.count > self.frequency:
             self.make_random_asteroid()
             self.count = 0
         self.count += 1
+
+        self.asteroids.update()
         for asteroid in self.asteroids:
-            asteroid.update()
+            if not asteroid.in_screen():
+                asteroid.kill()
