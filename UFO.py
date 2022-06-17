@@ -48,6 +48,7 @@ class UFO(pygame.sprite.Sprite):
         """отрисовка астероида"""
         self.screen.blit(self.image, self.rect)
 
+    
     def shoot(self, bullets):
         self.sound_shoot.play(0)
         bullet = Bullet(self.screen, self)
