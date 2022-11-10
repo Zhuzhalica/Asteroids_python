@@ -1,7 +1,7 @@
 import math
 import pygame
 
-import game_manager
+import Scripts.game_manager as game_manager
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -45,4 +45,5 @@ class Bullet(pygame.sprite.Sprite):
         self.screen.blit(self.image, self.position)
 
     def in_screen(self):
+        """Находится ли пуля в границах экарана"""
         return game_manager.in_screen(self.screen, self.position)

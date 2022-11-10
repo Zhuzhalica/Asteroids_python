@@ -1,13 +1,14 @@
-from tracemalloc import start
 import pygame
-import game_manager
+import Scripts.game_manager as game_manager
 
 
 class Asteroid(pygame.sprite.Sprite):
-    def __init__(self, generator=None, screen=pygame.display.set_mode((800, 450)),
+    def __init__(self, generator=None,
+                 screen=pygame.display.set_mode((800, 450)),
                  start_position=pygame.Vector2(), size=pygame.Vector2(),
-                 direction=pygame.Vector2(), speed=0, filename="assets/image/image_asteroids/planet1.png"):
-        """создаем астероид c стартовой позицией"""
+                 direction=pygame.Vector2(), speed=0,
+                 filename="assets/image/image_asteroids/planet1.png"):
+        """создание астероида"""
         pygame.sprite.Sprite.__init__(self)
         self.generator = generator
         self.screen = screen
@@ -33,9 +34,11 @@ class Asteroid(pygame.sprite.Sprite):
         self.rect.center = self.position
 
     def in_screen(self):
+        """находится ли астероид в границах экрана"""
         return game_manager.in_screen(self.screen, self.position)
 
     def death(self):
+        """разрушение астероида и создание его обломков"""
         if self.image.get_size()[0] > 55:
             for i in range(2):
                 self.generator. \

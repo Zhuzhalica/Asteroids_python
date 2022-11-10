@@ -4,12 +4,13 @@ import pygame_menu
 
 class Menu:
     def __init__(self, screen=pygame.display.set_mode((800, 450))):
-        my_theme = pygame_menu.Theme(background_color=(0, 0, 0, 0),  # transparent background
+        my_theme = pygame_menu.Theme(background_color=(0, 0, 0, 0),
                                      title_background_color=(0, 0, 0, 0),
                                      title_font_shadow=True,
                                      widget_padding=30)
-        self.image = pygame.transform.scale(pygame.image.load("assets/image/background.jpg"),
-                                            (screen.get_rect().width, screen.get_rect().height))
+        self.image = pygame.transform.scale(
+            pygame.image.load("assets/image/background.jpg"),
+            (screen.get_rect().width, screen.get_rect().height))
         self.screen = screen
         self.IsActive = True
         self.menu = pygame_menu.Menu("", 800, 800,

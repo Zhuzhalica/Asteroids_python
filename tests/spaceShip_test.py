@@ -1,7 +1,7 @@
 import unittest
 import pygame
-from space_ship import SpaceShip
-from Buffs import Buff_Item, Buffs
+from Scripts.space_ship import SpaceShip
+from Scripts.Buffs import Buff_Item, Buffs
 import time
 
 screen = pygame.display.set_mode((800, 450))
@@ -18,7 +18,8 @@ class Space_Ship_Tests(unittest.TestCase):
         test.move_up = True
         for i in range(10):
             test.update()
-        self.assertAlmostEqual(test.acceleration * 10, test.speed, delta=1e-5)
+        self.assertAlmostEqual(test.acceleration * 10,
+                               test.speed, delta=1e-5)
         self.assertAlmostEqual(398.35, test.position.x, delta=1e-5)
         self.assertAlmostEqual(225, test.position.y, delta=1e-5)
 
@@ -49,7 +50,8 @@ class Space_Ship_Tests(unittest.TestCase):
             test.update()
 
         self.assertEqual(72, test.angle)
-        self.assertEqual(pygame.Vector2(-0.951057, -0.309017), test.direction)
+        self.assertEqual(pygame.Vector2(-0.951057, -0.309017),
+                         test.direction)
 
         test.turn_right = False
         test.turn_left = True
@@ -59,7 +61,8 @@ class Space_Ship_Tests(unittest.TestCase):
             test.update()
 
         self.assertEqual(98, test.angle)
-        self.assertEqual(pygame.Vector2(-0.990268, 0.139173), test.direction)
+        self.assertEqual(pygame.Vector2(-0.990268, 0.139173),
+                         test.direction)
 
     def test_stay_in_screen(self):
         screen = pygame.display.set_mode((10, 10))
@@ -136,4 +139,6 @@ class Space_Ship_Tests(unittest.TestCase):
             test = SpaceShip()
             test.get_buff("saddsa")
 
-        self.assertEqual("Buff /saddsa/ doesn`t exist or doesn`t have attribute enum_type", e.exception.args[0])
+        self.assertEqual("Buff /saddsa/ doesn`t exist or"
+                         " doesn`t have attribute enum_type",
+                         e.exception.args[0])

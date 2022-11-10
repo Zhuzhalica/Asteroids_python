@@ -2,12 +2,13 @@ import pygame
 import random
 from pygame.sprite import Group
 
-from asteroid import Asteroid
+from Scripts.asteroid import Asteroid
 
 
 class Generator:
     def __init__(self, screen=pygame.display.set_mode((800, 450)),
                  frequency=0):
+        """Создание генератора астероидов"""
         self.screen = screen
         self.frequency = frequency
         self.asteroids = Group()
@@ -21,6 +22,7 @@ class Generator:
             asteroid.draw_asteroid()
 
     def make_random_asteroid(self):
+        """Создание случайного астероида"""
         start_position = (
             pygame.math.Vector2(0,
                                 random.
@@ -43,6 +45,7 @@ class Generator:
                                     size_v, direction, speed, image))
 
     def make_asteroid_with_size(self, position, size, image):
+        """Создание астероида по характеристикам"""
         direction = pygame.math.Vector2(random.uniform(-0.7, 0.7),
                                         random.uniform(-0.7, 0.7))
         size_v = pygame.math.Vector2(size, size)
@@ -51,6 +54,7 @@ class Generator:
                                     size_v, direction, speed, image))
 
     def update(self):
+        """Обновление генератора астероидов и самих астероидов"""
         if self.count > self.frequency:
             self.make_random_asteroid()
             self.count = 0

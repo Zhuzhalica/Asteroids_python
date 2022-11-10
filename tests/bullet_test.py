@@ -1,8 +1,8 @@
 import math
 import unittest
 import pygame
-from bullet import Bullet
-from space_ship import SpaceShip
+from Scripts.bullet import Bullet
+from Scripts.space_ship import SpaceShip
 
 pygame.init()
 screen = pygame.display.set_mode((800, 450))
@@ -14,7 +14,8 @@ class Bullet_Tests(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             Bullet(screen=screen, space_ship=None)
 
-        self.assertEqual("Space_ship is None", e.exception.args[0])
+        self.assertEqual("Space_ship is None",
+                         e.exception.args[0])
 
     def test_create_without_screen(self):
         result = Bullet(screen=screen, space_ship=player)
@@ -28,8 +29,10 @@ class Bullet_Tests(unittest.TestCase):
         result.speed = 7
         result.direction = player.direction.copy()
         position = player.position.copy()
-        position.y -= player.image.get_size()[1] * math.cos(math.radians(player.angle)) / 2
-        position.x -= player.image.get_size()[0] * math.sin(math.radians(player.angle)) / 2
+        position.y -= player.image.get_size()[1] * \
+                      math.cos(math.radians(player.angle)) / 2
+        position.x -= player.image.get_size()[0] * \
+                      math.sin(math.radians(player.angle)) / 2
         result.position = position
 
         test = Bullet(screen=screen, space_ship=player)

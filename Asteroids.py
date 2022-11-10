@@ -1,10 +1,11 @@
 import pygame
-from game import Game
-from menu import Menu
-from game_over_menu import Game_Over_Menu
+from Scripts.game import Game
+from Scripts.menu import Menu
+from Scripts.game_over_menu import Game_Over_Menu
 
 
 def run():
+    """Создание лаунчера игры"""
     pygame.init()
     pygame.mixer.pre_init(44100, -16, 1, 512)
     pygame.mixer.music.load("sounds/background_music.mp3")

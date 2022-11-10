@@ -1,6 +1,6 @@
 import unittest
 import pygame
-import game_manager
+from Scripts import game_manager
 
 
 class Game_Manager_Tests(unittest.TestCase):

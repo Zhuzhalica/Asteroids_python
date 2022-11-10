@@ -1,12 +1,12 @@
 import pygame
 import time
-from Buffs import Buffs
+from Scripts.Buffs import Buffs
 
 
 class SpaceShip(pygame.sprite.Sprite):
     def __init__(self, screen=pygame.display.set_mode((800, 450))):
-        self.sound_boom = pygame.mixer.Sound('sounds/boom.mp3')
         """создаем корабль"""
+        self.sound_boom = pygame.mixer.Sound('sounds/boom.mp3')
         pygame.sprite.Sprite.__init__(self)
         self.health = 3
         self.screen = screen
@@ -24,9 +24,11 @@ class SpaceShip(pygame.sprite.Sprite):
         self.rect.height = int(self.rect.height * 0.75)
         self.rect.center = self.position
 
+        # Переменный бонусов
         self.has_shield = False
         self.triple_gun = False
         self.start_triple_gun = time.perf_counter()
+
         # переменные движения корабля
         self.move_up = False
         self.turn_right = False
@@ -63,11 +65,13 @@ class SpaceShip(pygame.sprite.Sprite):
 
         self.angle = (self.direction.angle_to((1, 0)) - 90) % 360
 
-        if self.triple_gun and time.perf_counter() - self.start_triple_gun > 8:
+        if self.triple_gun and \
+                time.perf_counter() - self.start_triple_gun > 8:
             self.triple_gun = False
 
     def stay_in_screen(self):
-        """Если игрок выходит за границы экарана, то оказывается с другой его стороны"""
+        """Если игрок выходит за границы экарана,
+         то оказывается с другой его стороны"""
         if self.position.y < self.screen_rect.top:
             self.position.y += self.screen_rect.bottom - self.screen_rect.top
 
@@ -94,9 +98,8 @@ class SpaceShip(pygame.sprite.Sprite):
             self.start_time = time.perf_counter()
         else:
             self.has_shield = False
-            self.image = pygame.transform.scale(pygame.image.load
-                                                ("assets/image/space-ship.png"),
-                                                (50, 50))
+            self.image = pygame.transform.scale(
+                pygame.image.load("assets/image/space-ship.png"), (50, 50))
             self.start_time = time.perf_counter()
 
     def get_buff(self, enum):
@@ -104,9 +107,9 @@ class SpaceShip(pygame.sprite.Sprite):
             if enum.enum_type is Buffs.Shield:
                 self.has_shield = True
                 self.image = \
-                    pygame.transform.scale(pygame.image.load
-                                           ("assets/image/space-ship-pr.png"),
-                                           (50, 50))
+                    pygame.transform.scale(
+                        pygame.image.load("assets/image/space-ship-pr.png"),
+                        (50, 50))
             elif enum.enum_type is Buffs.HP:
                 self.health += 1
 
@@ -114,4 +117,5 @@ class SpaceShip(pygame.sprite.Sprite):
                 self.triple_gun = True
                 self.start_triple_gun = time.perf_counter()
         except AttributeError:
-            raise ValueError(f'Buff /{enum}/ doesn`t exist or doesn`t have attribute enum_type')
+            raise ValueError(f'Buff /{enum}/ doesn`t exist or'
+                             f' doesn`t have attribute enum_type')

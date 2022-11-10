@@ -1,14 +1,13 @@
 import unittest
 import pygame
-from space_ship import SpaceShip
-from Buffs import Buff_Item, Buffs
-from generator_buffs import Generator_Buffs
-import time
+from Scripts.space_ship import SpaceShip
+from Scripts.Buffs import Buffs
+from Scripts.generator_buffs import Generator_Buffs
 
 screen = pygame.display.set_mode((800, 450))
 
 
-class Space_Ship_Tests(unittest.TestCase):
+class Generator_Buffs_Tests(unittest.TestCase):
     def test_empty_create(self):
         result = Generator_Buffs(screen=screen)
         self.assertEqual(str(result.screen), str(SpaceShip().screen))

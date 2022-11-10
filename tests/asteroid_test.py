@@ -1,7 +1,7 @@
 import unittest
 import pygame
-from generator_asteroids import Generator
-from asteroid import Asteroid
+from Scripts.generator_asteroids import Generator
+from Scripts.asteroid import Asteroid
 
 
 class Asteroid_Tests(unittest.TestCase):

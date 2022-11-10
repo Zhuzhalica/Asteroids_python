@@ -1,6 +1,6 @@
 import unittest
 import pygame
-from generator_asteroids import Generator
+from Scripts.generator_asteroids import Generator
 
 screen = pygame.display.set_mode((800, 450))
 
@@ -8,7 +8,8 @@ screen = pygame.display.set_mode((800, 450))
 class Generator_Asteroid_Tests(unittest.TestCase):
     def test_empty_create(self):
         result = Generator(screen, frequency=0)
-        self.assertEqual(str(result.__dict__), str(Generator().__dict__))
+        self.assertEqual(str(result.__dict__),
+                         str(Generator().__dict__))
 
     def test_random_asteroid(self):
         result = Generator(screen, frequency=5)
@@ -21,7 +22,8 @@ class Generator_Asteroid_Tests(unittest.TestCase):
         result.make_asteroid_with_size(position=null_vector,
                                        size=null_vector,
                                        image="assets/image/"
-                                             "image_asteroids/planet1.png")
+                                             "image_asteroids/"
+                                             "planet1.png")
         self.assertEqual(len(result.asteroids), 1)
 
     def test_update_count(self):

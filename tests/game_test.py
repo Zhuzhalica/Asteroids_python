@@ -1,6 +1,6 @@
 import unittest
 import pygame
-from game import Game
+from Scripts.game import Game
 
 screen = pygame.display.set_mode((800, 450))
 
